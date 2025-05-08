@@ -1,15 +1,13 @@
+# from typing import List
 from abc import ABC, abstractmethod
 import logging
-from colorama import Fore, Style, init
-
-init(autoreset=True)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 class Vehicle(ABC):
-    def __init__(self, make: str, model: str, region_spec: str):
+    def __init__(self, make: str, model: str, region_spec: str) -> None:
         self.make = make
         self.model = model
         self.region_spec = region_spec
@@ -22,14 +20,14 @@ class Vehicle(ABC):
 class Car(Vehicle):
     def start_engine(self) -> None:
         logger.info(
-            f" {Fore.BLUE}{self.make} {self.model} ({self.region_spec} Spec): {Style.BRIGHT}Двигун запущено"
+            "%s %s (%s Spec): Двигун запущено", self.make, self.model, self.region_spec
         )
 
 
 class Motorcycle(Vehicle):
     def start_engine(self) -> None:
         logger.info(
-            f" {Fore.YELLOW}{self.make} {self.model} ({self.region_spec} Spec): {Style.BRIGHT}Мотор заведено"
+            "%s %s (%s Spec): Двигун запущено", self.make, self.model, self.region_spec
         )
 
 
@@ -59,17 +57,16 @@ class EUVehicleFactory(VehicleFactory):
         return Motorcycle(make, model, "EU")
 
 
-if __name__ == "__main__":
+def main() -> None:
     us_factory = USVehicleFactory()
-    us_car = us_factory.create_car("Chevrolet", "Impala 1967")
-    us_motorcycle = us_factory.create_motorcycle("Indian", "Challenger")
+    eu_factory = EUVehicleFactory()
+
+    us_car = us_factory.create_car("Hyundai", "Santafe")
+    eu_car = eu_factory.create_car("ZAZ", "Slavuta")
 
     us_car.start_engine()
-    us_motorcycle.start_engine()
-
-    eu_factory = EUVehicleFactory()
-    eu_car = eu_factory.create_car("Volkswagen", "Touareg")
-    eu_motorcycle = eu_factory.create_motorcycle("BMW", "R 1250 RT")
-
     eu_car.start_engine()
-    eu_motorcycle.start_engine()
+
+
+if __name__ == "__main__":
+    main()
